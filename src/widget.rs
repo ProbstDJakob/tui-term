@@ -13,10 +13,12 @@ use crate::state;
 /// with the `PseudoTerminal` widget.
 pub trait Screen {
     /// The type of cell this screen contains
-    type C: Cell;
+    type C<'a>: Cell
+    where
+        Self: 'a;
 
     /// Returns the cell at the given location if it exists.
-    fn cell(&self, row: u16, col: u16) -> Option<&Self::C>;
+    fn cell(&self, row: u16, col: u16) -> Option<Self::C<'_>>;
     /// Returns whether the terminal should be hidden
     fn hide_cursor(&self) -> bool;
     /// Returns cursor position of screen.

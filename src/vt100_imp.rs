@@ -3,10 +3,10 @@ use ratatui::style::{Modifier, Style};
 use crate::widget::{Cell, Screen};
 
 impl Screen for vt100::Screen {
-    type C = vt100::Cell;
+    type C<'a> = &'a vt100::Cell;
 
     #[inline]
-    fn cell(&self, row: u16, col: u16) -> Option<&Self::C> {
+    fn cell(&self, row: u16, col: u16) -> Option<Self::C<'_>> {
         self.cell(row, col)
     }
 
@@ -21,10 +21,10 @@ impl Screen for vt100::Screen {
     }
 }
 
-impl Cell for vt100::Cell {
+impl Cell for &vt100::Cell {
     #[inline]
     fn has_contents(&self) -> bool {
-        self.has_contents()
+        (*self).has_contents()
     }
 
     #[inline]
